@@ -9,42 +9,36 @@ User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = SlugRelatedField(slug_field='username', read_only=True)
+    author = SlugRelatedField(slug_field="username", read_only=True)
 
     class Meta:
-        fields = '__all__'
+        fields = "__all__"
         model = Post
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
-    )
-    post = serializers.SlugRelatedField(
-        read_only=True, slug_field='id'
-    )
+    author = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    post = serializers.SlugRelatedField(read_only=True, slug_field="id")
 
     class Meta:
-        fields = '__all__'
+        fields = "__all__"
         model = Comment
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        read_only=True, slug_field='username'
-    )
+    user = serializers.SlugRelatedField(read_only=True, slug_field="username")
     following = serializers.SlugRelatedField(
-        slug_field='username',
+        slug_field="username",
         queryset=User.objects.all(),
     )
 
     class Meta:
-        fields = '__all__'
+        fields = "__all__"
         model = Follow
 
     def validate(self, data):
-        user = self.context['request'].user
-        following = data.get('following')
+        user = self.context["request"].user
+        following = data.get("following")
 
         # ПРОВЕРКА 1: Самоподписка (Этого не хватало!)
         if user == following:
@@ -60,4 +54,4 @@ class FollowSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = '__all__'
+        fields = "__all__"
