@@ -1,5 +1,6 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.generics import get_object_or_404
+from rest_framework.pagination import LimitOffsetPagination
 
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
@@ -18,6 +19,7 @@ class PostViewSet(viewsets.ModelViewSet):
         permissions.IsAuthenticatedOrReadOnly,
         IsAuthorOrReadOnly,
     )
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
