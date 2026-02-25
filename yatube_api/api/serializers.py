@@ -8,7 +8,8 @@ User = get_user_model()
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = SlugRelatedField(slug_field="username", read_only=True)
+    author = SlugRelatedField(slug_field="username",
+                              read_only=True)
 
     class Meta:
         fields = "__all__"
@@ -16,8 +17,10 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    post = serializers.SlugRelatedField(read_only=True, slug_field="id")
+    author = serializers.SlugRelatedField(read_only=True,
+                                          slug_field="username")
+    post = serializers.SlugRelatedField(read_only=True,
+                                        slug_field="id")
 
     class Meta:
         fields = "__all__"
@@ -25,7 +28,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    user = serializers.SlugRelatedField(read_only=True,
+                                        slug_field="username")
     following = serializers.SlugRelatedField(
         slug_field="username",
         queryset=User.objects.all(),
@@ -41,11 +45,14 @@ class FollowSerializer(serializers.ModelSerializer):
 
         # ПРОВЕРКА 1: Самоподписка (Этого не хватало!)
         if user == following:
-            raise serializers.ValidationError("Нельзя подписаться на самого себя.")
+            raise serializers.ValidationError(
+                "Нельзя подписаться на самого себя.")
 
         # ПРОВЕРКА 2: Дубликат
-        if Follow.objects.filter(user=user, following=following).exists():
-            raise serializers.ValidationError("Вы уже подписаны на этого автора.")
+        if Follow.objects.filter(user=user,
+                                 following=following).exists():
+            raise serializers.ValidationError(
+                "Вы уже подписаны на этого автора.")
 
         return data
 
