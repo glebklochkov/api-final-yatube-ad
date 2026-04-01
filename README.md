@@ -41,7 +41,7 @@ python3 manage.py runserver
 Примеры запросов к API:
 Получение токена:
 ```
-POST /api/v1/api-token-auth/
+POST /api/v1/jwt/create/
 ```
 
 Передайте логин и пароль в формате JSON:
